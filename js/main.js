@@ -1,40 +1,39 @@
 
-var transform = function(canvas, ctx, operations){
-    ctx.save();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.translate(canvas.width / 2, canvas.height / 2);
+var transform = function(canvas, context, centerx, centery, image, operations){
+    context.save();
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.translate(canvas.width / 2, canvas.height / 2);
 
     if (operations.scale !== undefined)
-        ctx.scale(operations.scale, operations.scale);
+        context.scale(operations.scale, operations.scale);
 
     if (operations.rotate !== undefined)
-        ctx.rotate(operations.rotate * Math.PI / 180);
+        context.rotate(operations.rotate * Math.PI / 180);
 
-    ctx.translate(-canvas.width / 2, -canvas.height / 2);
-    ctx.drawImage(img, x, y);
-    ctx.restore();
-
-    return ctx;
+    context.translate(-canvas.width / 2, -canvas.height / 2);
+    context.drawImage(image, centerx, centery);
+    context.restore();
+    return context;
 }
 
 var imprintImageToCanvas = function(canvas, image, height, width){
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(image, height, width);
-    return ctx;
+    var context = canvas.getContext('2d');
+    context.drawImage(image, height, width);
+    return context;
 }
 
 $(document).ready(function(){
     var deviceWidth = window.innerWidth;
+    var size = Math.min(640, deviceWidth-20);
+
     var image = $('#default-image')[0];
 
     var canvas = $('canvas')[0];
-    canvas.width = Math.min(600, deviceWidth-20);
-    canvas.height = Math.min(480, deviceWidth-20);
-
-    x = canvas.width/2 - image.width/2;
-    y = canvas.height/2 - image.height/2;
-
-    var ctx = imprintImageToCanvas(canvas, image, x, y);
+    canvas.width = size;
+    canvas.height = size;
+    var centerx = canvas.width/2 - image.width/2;
+    var centery = canvas.height/2 - image.height/2;
+    var context = imprintImageToCanvas(canvas, image, centerx, centery);
 
     var operations = {
         scale: $('#scale-image').value,
@@ -43,12 +42,11 @@ $(document).ready(function(){
 
     $('#scale-image').change(function(){
         operations.scale = this.value;
-        ctx = transform(canvas, ctx, operations);
+        context = transform(canvas, context, centerx, centery, image, operations);
     });
 
-    $('#rotate-image').on('change mouseover', function(){
+    $('#rotate-image').change(function(){
         operations.rotate = this.value;
-        ctx = transform(canvas, ctx, operations);
+        context = transform(canvas, context, centerx, centery, image, operations);
     });
-
 });
