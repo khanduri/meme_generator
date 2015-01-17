@@ -1,4 +1,28 @@
 
+
+var wrapText = function(context, text, x, y, maxWidth, lineHeight) {
+    var words = text.split(' ');
+    var line = '';
+
+    for(var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = context.measureText(testLine);
+        var testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+            context.strokeText(line, x, y);
+            context.fillText(line, x, y);
+            line = words[n] + ' ';
+            y += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+
+    context.strokeText(line, x, y);
+    context.fillText(line, x, y);
+    return context;
+}
+
 var transform = function(canvas, context, centerx, centery, image, operations){
     context.save();
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -24,29 +48,59 @@ var imprintImageToCanvas = function(canvas, image, height, width){
 
 $(document).ready(function(){
     var deviceWidth = window.innerWidth;
-    var size = Math.min(640, deviceWidth-20);
+    var size = Math.min(300, deviceWidth-20);
+    var lineHeight = 30;
 
     var image = $('#default-image')[0];
 
     var canvas = $('canvas')[0];
     canvas.width = size;
     canvas.height = size;
+
     var centerx = canvas.width/2 - image.width/2;
     var centery = canvas.height/2 - image.height/2;
+
     var context = imprintImageToCanvas(canvas, image, centerx, centery);
+
+    context.textAlign = 'center';
+    context.lineWidth  = 2;
+    context.font = '20pt Calibri';
+    context.strokeStyle = 'white';
+    context.fillStyle = 'black';
+
+    var updateCanvas = function(){
+        context = transform(canvas, context, centerx, centery, image, operations);
+        context = wrapText(context, lowerText, size / 2, size - 10, size, lineHeight);
+        context = wrapText(context, upperText, size / 2, lineHeight + 10, size, lineHeight);
+    }
 
     var operations = {
         scale: $('#scale-image').value,
         rotate: $('#rotate-image').value
     }
 
+    var lowerText = $('#lower-message').val();
+    var upperText = $('#upper-message').val();
+
+    updateCanvas();
+
+    $('#lower-message').on('input', function(){
+        lowerText = $('#lower-message').val();
+        updateCanvas();
+    });
+
+    $('#upper-message').on('input', function(){
+        upperText = $('#upper-message').val();
+        updateCanvas();
+    });
+
     $('#scale-image').change(function(){
         operations.scale = this.value;
-        context = transform(canvas, context, centerx, centery, image, operations);
+        updateCanvas();
     });
 
     $('#rotate-image').change(function(){
         operations.rotate = this.value;
-        context = transform(canvas, context, centerx, centery, image, operations);
+        updateCanvas();
     });
 });
