@@ -47,11 +47,11 @@ var imprintImageToCanvas = function(canvas, image, height, width){
 }
 
 $(document).ready(function(){
+    var image = $('#default-image')[0];
+
     var deviceWidth = window.innerWidth;
     var size = Math.min(300, deviceWidth-20);
     var lineHeight = 30;
-
-    var image = $('#default-image')[0];
 
     var canvas = $('canvas')[0];
     canvas.width = size;
@@ -102,5 +102,20 @@ $(document).ready(function(){
     $('#rotate-image').change(function(){
         operations.rotate = this.value;
         updateCanvas();
+    });
+
+    $('#upload-image').change(function(){
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            img = new Image();
+            img.onload = function(){
+                context.drawImage(img,0,0);
+                updateCanvas();
+            }
+            img.src = reader.result;
+            image = img;
+        }
+        reader.readAsDataURL(this.files[0]);
     });
 });
