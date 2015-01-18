@@ -118,4 +118,8 @@ $(document).ready(function(){
         }
         reader.readAsDataURL(this.files[0]);
     });
+
+    $('#download-image').click(function(){
+        this.href = canvas.toDataURL();
+    });
 });
