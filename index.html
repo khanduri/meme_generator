@@ -20,6 +20,14 @@
         .container {
             padding: 60px 15px 0;
         }
+        .jumbotron {
+            padding: 0px;
+            background-color: rgba(51, 122, 183, 1);
+        }
+        .jumbotron h1 {
+            color: rgba(255, 255, 255, 0.85);
+            margin: 0px;
+        }
         </style>
     </head>
     <body>
@@ -33,7 +41,7 @@
             </div>
 
             <div class="row">
-                <img src="img/default.png" class="hidden" id="default-image">
+                <img src="img/default.jpg" class="hidden" id="default-image">
 
                 <canvas class="col-md-7"></canvas>
                 <div class="col-md-5">
@@ -44,7 +52,7 @@
                     <hr>
                     <div class="form-group">
                         <label>Scale</label>
-                        <input id="scale-image" type="range" min="0.05" max="2" value="1" step="0.01">
+                        <input id="scale-image" type="range" min="0.05" max="2" value="1.0" step="0.01">
                     </div>
                     <div class="form-group">
                         <label>Rotate</label>
@@ -53,9 +61,9 @@
                     <hr>
                     <div class="form-group">
                         <label>Upper Message</label>
-                        <input id="upper-message" class="form-control" type="text" value="sample">
+                        <input id="upper-message" class="form-control" type="text" value="Uses mime genarater">
                         <label>Lower Message</label>
-                        <input id="lower-message" class="form-control" type="text" value="sample">
+                        <input id="lower-message" class="form-control" type="text" value="Missspells all teh words">
                     </div>
                     <hr>
                     <div class="form-group">
@@ -65,6 +73,13 @@
                 </div>
             </div>
         </div>
+
+        <a href="https://github.com/khanduri/meme_generator">
+            <img
+                style="position: absolute; top: 0; right: 0; border: 0;"
+                alt="Fork me on GitHub"
+                src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+        </a>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>

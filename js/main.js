@@ -63,20 +63,20 @@ $(document).ready(function(){
     var context = imprintImageToCanvas(canvas, image, centerx, centery);
 
     context.textAlign = 'center';
-    context.lineWidth  = 2;
+    context.lineWidth  = 4;
     context.font = '20pt Calibri';
-    context.strokeStyle = 'white';
-    context.fillStyle = 'black';
+    context.strokeStyle = 'black';
+    context.fillStyle = 'white';
 
     var updateCanvas = function(){
         context = transform(canvas, context, centerx, centery, image, operations);
-        context = wrapText(context, lowerText, size / 2, size - 10, size, lineHeight);
-        context = wrapText(context, upperText, size / 2, lineHeight + 10, size, lineHeight);
+        context = wrapText(context, lowerText, size/2, size-10, size, lineHeight);
+        context = wrapText(context, upperText, size/2, lineHeight+10, size, lineHeight);
     }
 
     var operations = {
-        scale: $('#scale-image').value,
-        rotate: $('#rotate-image').value
+        scale: $('#scale-image').val(),
+        rotate: $('#rotate-image').val()
     }
 
     var lowerText = $('#lower-message').val();
